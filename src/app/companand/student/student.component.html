@@ -1,0 +1,21 @@
+firstName<input type="text" #inputFirstName >
+lastName<input type="text" #inputLastName >
+
+
+<button (click)="addEmployee(inputFirstName.value,inputLastName.value ) ; inputFirstName.value='';inputLastName.value=''">add</button>
+ {{onchangestatus()}}
+ <table>
+     <tr>
+        <th>ID</th>
+        <th>name</th>
+        <th>Done</th>
+        <th>Delet</th>
+    </tr>
+    <tr *ngFor="let student of students ; let currentindex=index">
+        <td>{{currentindex +1}}</td>
+        <td [class.decorator]='student.IsDone'>{{student.Title}}</td>
+        <td><input type="checkbox"  (change)= 'changestatuse(student)'  [checked]='student.IsDone'></td>
+        <td><button (click)='deletstudent(currentindex)'>delete</button></td>
+    </tr>
+</table>
+

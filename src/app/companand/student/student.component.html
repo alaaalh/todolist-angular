@@ -13,7 +13,7 @@ lastName<input type="text" #inputLastName >
     </tr>
     <tr *ngFor="let student of students ; let currentindex=index">
         <td>{{currentindex +1}}</td>
-        <td [class.decorator]='student.IsDone'>{{student.Title}}</td>
+        <td [class.decorator]='student.IsDone'>{{student.Title}}{{student.ID}}</td>
         <td><input type="checkbox"  (change)= 'changestatuse(student)'  [checked]='student.IsDone'></td>
         <td><button (click)='deletstudent(currentindex)'>delete</button></td>
     </tr>

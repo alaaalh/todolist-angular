@@ -34,7 +34,15 @@ export class StudentComponent implements OnInit {
       let student: Student = new Student();
       student.Title = name;
       student.ID = data;
-      this.students.push(student);
+      this._httpclient
+        .post<any>('http://api.mohamed-sadek.com/task/post', student)
+        .subscribe(
+          (response) => {
+            student.ID = response['Data'] as number;
+            this.students.push(student);
+          },
+          (error) => {}
+        );
     }
   }
 
@@ -44,9 +52,26 @@ export class StudentComponent implements OnInit {
 
   changestatuse(item: Student) {
     item.IsDone = !item.IsDone;
+    this._httpclient
+      .put('http://api.mohamed-sadek.com/task/put', item)
+      .subscribe(
+        (response) => {
+          alert('updata');
+        },
+        (error) => {}
+      );
   }
   deletstudent(index: number) {
-    this.students.splice(index, 1);
+    let student = this.students[index];
+    this._httpclient
+      .delete(`http://api.mohamed-sadek.com/task/delete?id=${student.ID}`)
+      .subscribe(
+        (response) => {
+          this.students.splice(index, 1);
+        },
+        (error) => {
+          alert('sorry please try again');
+        }
+      );
   }
- 
 }

@@ -10,20 +10,17 @@ import { HttpClient } from '@angular/common/http';
 export class StudentComponent implements OnInit {
   constructor(
     private taskService: TaskService,
-    private _httpclient: HttpClient
   ) {}
 
   ngOnInit(): void {
-    this._httpclient
-      .get<any>('http://api.mohamed-sadek.com/task/get')
-      .subscribe(
-        (response) => {
-          this.students = response['Data'] as Student[];
-        },
-        (error) => {
-          alert('sorry please try again');
-        }
-      );
+    this.taskService.get().subscribe(
+      (response) => {
+        this.students = response['Data'] as Student[];
+      },
+      (error) => {
+        alert('sorry please try again');
+      }
+    );
   }
 
   students: Student[] = [];
@@ -34,15 +31,13 @@ export class StudentComponent implements OnInit {
       let student: Student = new Student();
       student.Title = name;
       student.ID = data;
-      this._httpclient
-        .post<any>('http://api.mohamed-sadek.com/task/post', student)
-        .subscribe(
-          (response) => {
-            student.ID = response['Data'] as number;
-            this.students.push(student);
-          },
-          (error) => {}
-        );
+      this.taskService.creat(student).subscribe(
+        (response) => {
+          student.ID = response['Data'] as number;
+          this.students.push(student);
+        },
+        (error) => {}
+      );
     }
   }
 
@@ -52,26 +47,22 @@ export class StudentComponent implements OnInit {
 
   changestatuse(item: Student) {
     item.IsDone = !item.IsDone;
-    this._httpclient
-      .put('http://api.mohamed-sadek.com/task/put', item)
-      .subscribe(
-        (response) => {
-          alert('updata');
-        },
-        (error) => {}
-      );
+    this.taskService.updata(item).subscribe(
+      (response) => {
+        alert('updata');
+      },
+      (error) => {}
+    );
   }
   deletstudent(index: number) {
     let student = this.students[index];
-    this._httpclient
-      .delete(`http://api.mohamed-sadek.com/task/delete?id=${student.ID}`)
-      .subscribe(
-        (response) => {
-          this.students.splice(index, 1);
-        },
-        (error) => {
-          alert('sorry please try again');
-        }
-      );
+    this.taskService.delete(index).subscribe(
+      (response) => {
+        this.students.splice(index, 1);
+      },
+      (error) => {
+        alert('sorry please try again');
+      }
+    );
   }
 }

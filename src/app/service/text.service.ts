@@ -6,6 +6,7 @@ import { environment } from './../../environments/environment.prod';
 @Injectable()
 export class TaskService
 {
+
     constructor(private _httpclient:HttpClient){}
     emptyText(text:string){
         if(text==null||text.length==0)return true;
@@ -24,6 +25,9 @@ export class TaskService
 
     get(){
         return this._httpclient.get<any>(`${environment.apiUrl}/task/get`)
+    }
+    getDetails(id:number){
+        return this._httpclient.get<any>(`${environment.apiUrl}/task/GetByID?id=${id}`)
     }
 
     delete(id:number){

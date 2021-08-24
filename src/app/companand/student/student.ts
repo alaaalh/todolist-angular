@@ -4,4 +4,5 @@ export class Student{
     Title : string = '';
     IsDone :boolean =  false;
     CreatedData: any;
+    isdeleting:boolean=false;
 }

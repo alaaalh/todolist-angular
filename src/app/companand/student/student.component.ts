@@ -16,6 +16,7 @@ export class StudentComponent implements OnInit {
     this.taskService.get().subscribe(
       (response) => {
         this.students = response['Data'] as Student[];
+        this.isloaded=true;
       },
       (error) => {
         alert('sorry please try again');
@@ -24,6 +25,8 @@ export class StudentComponent implements OnInit {
   }
 
   students: Student[] = [];
+  isloaded:boolean=false;
+  isdeleting:boolean=false;
   addEmployee(name: string, data: string) {
     if (this.taskService.emptyText(name)) {
       alert('sorry empty text');
@@ -56,7 +59,8 @@ export class StudentComponent implements OnInit {
   }
   deletstudent(index: number) {
     let student = this.students[index];
-    this.taskService.delete(index).subscribe(
+    student.isdeleting=true;
+    this.taskService.delete(student.ID).subscribe(
       (response) => {
         this.students.splice(index, 1);
       },

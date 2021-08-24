@@ -1,11 +1,16 @@
-firstName<input type="text" #inputFirstName>
-lastName<input type="text" #inputLastName >
+firstName<input (keyup.enter)="addEmployee(inputFirstName.value,inputLastName.value) ; inputFirstName.value='' " type="text" #inputFirstName> lastName
+<input type="text" #inputLastName>
 
 
-<button (click)="addEmployee(inputFirstName.value,inputLastName.value ) ; inputFirstName.value='';inputLastName.value=''">add</button>
- {{onchangestatus()}}
- <table>
-     <tr>
+<button (click)="addEmployee(inputFirstName.value,inputLastName.value ) ; inputFirstName.value='';inputLastName.value=''">add</button> {{onchangestatus()}}
+<div *ngIf="!isloaded">
+    is loaded....
+</div>
+<div *ngIf="students.length==0 && isloaded">
+    Not Tasks Found
+</div>
+<table *ngIf="students.length>0 && isloaded">
+    <tr>
         <th>ID</th>
         <th>name</th>
         <th>Done</th>
@@ -13,9 +18,12 @@ lastName<input type="text" #inputLastName >
     </tr>
     <tr *ngFor="let student of students ; let currentindex=index">
         <td>{{currentindex +1}}</td>
-        <td [class.decorator]='student.IsDone'>{{student.Title}}{{student.ID}}</td>
-        <td><input type="checkbox"  (change)= 'changestatuse(student)'  [checked]='student.IsDone'></td>
-        <td><button (click)='deletstudent(currentindex)'>delete</button></td>
+        <td [class.decorator]='student.IsDone'>
+            <a routerLink='/details/{{student.ID}}'>{{student.Title}}{{student.ID}}</a>
+        </td>
+        <td><input type="checkbox" (change)='changestatuse(student)' [checked]='student.IsDone'></td>
+        <td><button *ngIf="!student.isdeleting" (click)='deletstudent(currentindex)'>delete</button>
+            <img *ngIf="student.isdeleting" src="assets/image/ajax-loader (1).gif">
+        </td>
     </tr>
 </table>
-
